@@ -1,0 +1,69 @@
+import axios from "axios";
+import {orderBy} from "lodash/collection";
+
+export default {
+    actions: {
+        fetchComments(ctx) {
+            axios.get('/api/comments/')
+                .then(response => {
+                    ctx.commit('updateAllComments', response.data);
+                    ctx.commit('sortComments');
+                }).catch(error => {
+                    console.error('Ошибка при получении комментариев:', error);
+                })
+        },
+        changeCurrentPage(ctx, page) {
+            ctx.commit('changeCurrentPage', page);
+        },
+        submitComment(ctx, newComment) {
+            axios.post('/api/comments/', JSON.stringify(newComment),
+                {
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then(() => {
+                    return ctx.dispatch('fetchComments');
+                })
+                .catch(error => {
+                    console.error('Ошибка при отправке комментария:', error);
+                })
+        },
+        async deleteComment(ctx, id) {
+            await axios.delete(`/api/comments/${id}`)
+                .then(() => {
+                    ctx.dispatch('fetchComments');
+                })
+                .catch(error => {
+                    console.error('Ошибка при удалении комментария:', error);
+                    throw new Error();
+                })
+        },
+    },
+    mutations: {
+        updateAllComments(state, allComments) {
+            state.allComments = allComments;
+        },
+        changeCurrentPage(state, page) {
+            state.currentPage = page;
+        },
+        sortComments(state, arg = state.sortedBy) {
+            state.allComments = orderBy(state.allComments, [(elem) => elem[arg.criterion]], arg.direction);
+            state.sortedBy = {criterion: arg.criterion, direction: arg.direction};
+        },
+    },
+    state: {
+        allComments: [],
+        currentPage: 1,
+        sortedBy: {criterion: 'date', direction: ['asc', 'desc']},
+    },
+    getters: {
+        allComments(state) {
+            return state.allComments;
+        },
+        currentPage(state) {
+            return state.currentPage;
+        },
+        sortedBy(state) {
+            return state.sortedBy;
+        }
+    },
+}
