@@ -3,34 +3,16 @@
         <div class="commentary__inner">
             <h1 class="commentary__header">Комментарии:</h1>
             <div class="commentary__sort-buttons">
-                <SortButton
-                    :text="'Sort by ID'"
-                    :criterion="'id'"
-                    :direction="sortedBy.direction"
-                    v-if="sortedBy.criterion === 'date'"
-                />
-                <SortButton
-                    :text="'Sort by date'"
-                    :criterion="'date'"
-                    :direction="sortedBy.direction"
-                    v-if="sortedBy.criterion === 'id'"
-                />
-                <SortButton
-                    :text="'Sort by ascending'"
-                    :criterion="sortedBy.criterion"
-                    :direction="['asc', 'desc']"
-                    v-if="sortedBy.direction[0] === 'desc'"
-                />
-                <SortButton
-                    :text="'Sort by descending'"
-                    :criterion="sortedBy.criterion"
-                    :direction="['desc', 'asc']"
-                    v-if="sortedBy.direction[0] === 'asc'"
-                />
+                <template v-for="(button, index) in buttons">
+                    <SortButton
+                        v-bind="button"
+                        v-if="button.condition"
+                        :key="index"
+                    />
+                </template>
             </div>
-
             <ul class="commentary__list">
-                <Comment v-for="comment in currentComments" :comment="comment" :key="comment.id"/>
+                <Comment v-for="comment in currentComments" v-bind="comment" :key="comment.id"/>
             </ul>
             <InputComment/>
             <Pagination :pages="pages"/>
@@ -44,6 +26,7 @@ import Comment from "../Comment/Comment.vue";
 import InputComment from "../InputComment/InputComment.vue";
 import Pagination from "../Pagination/Pagination.vue";
 import SortButton from "../SortButton/SortButton.vue";
+import {mapGetters} from "vuex";
 
 export default {
     components: {
@@ -53,10 +36,8 @@ export default {
         SortButton
     },
     computed: {
-        allComments: function () {
-            return this.$store.getters.allComments;
-        },
-        currentComments: function() {
+        ...mapGetters(['currentPage', 'sortedBy', 'allComments']),
+        currentComments() {
             const start = this.currentPage * 3 - 3;
             const end = this.currentPage * 3;
             let result = this.allComments.slice(start, end);
@@ -68,14 +49,36 @@ export default {
 
             return result;
         },
-        pages: function () {
+        pages() {
             return ceil(this.allComments.length / 3);
         },
-        currentPage: function () {
-            return this.$store.getters.currentPage;
-        },
-        sortedBy: function () {
-            return this.$store.getters.sortedBy;
+        buttons() {
+            return [
+                {
+                    text: 'Sort by ID',
+                    criterion: 'id',
+                    direction: this.sortedBy.direction,
+                    condition: this.sortedBy.criterion === 'date'
+                },
+                {
+                    text: 'Sort by date',
+                    criterion: 'date',
+                    direction: this.sortedBy.direction,
+                    condition: this.sortedBy.criterion === 'id'
+                },
+                {
+                    text: 'Sort by ascending',
+                    criterion: this.sortedBy.criterion,
+                    direction: ['asc', 'desc'],
+                    condition: this.sortedBy.direction[0] === 'desc'
+                },
+                {
+                    text: 'Sort by descending',
+                    criterion: this.sortedBy.criterion,
+                    direction: ['desc', 'asc'],
+                    condition: this.sortedBy.direction[0] === 'asc'
+                },
+            ]
         }
     },
     mounted() {
@@ -99,6 +102,8 @@ export default {
 }
 
 .commentary__sort-buttons {
+    display: flex;
+    gap: 10px;
     margin-bottom: 16px;
 }
 </style>

@@ -1,7 +1,17 @@
 <template>
-    <form class="comment-form" v-on:submit.prevent="submitComment">
-        <input class="comment-form__author" v-model="newComment.name" required placeholder="Your name">
-        <textarea v-model="newComment.text" class="comment-form__text" required placeholder="Your comment"></textarea>
+    <form class="comment-form" @submit.prevent="submitComment">
+        <input
+            v-model="newComment.name"
+            class="comment-form__author"
+            required
+            placeholder="Your name"
+        >
+        <textarea
+            v-model="newComment.text"
+            class="comment-form__text"
+            required
+            placeholder="Your comment"
+        />
         <div class="comment-form__date">
             <label class="comment-form__label">Date: </label>
             <VueDatePicker v-model="newComment.date" required/>
@@ -16,7 +26,6 @@ export default {
     components: {
         VueDatePicker
     },
-    computed: {},
     data() {
         return {
             newComment: {name: '', text: '', date: new Date()},
@@ -79,5 +88,11 @@ export default {
     color: white;
     font-size: 18px;
     padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .comment-form__author {
+        width: 50%;
+    }
 }
 </style>

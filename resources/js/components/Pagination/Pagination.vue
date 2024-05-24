@@ -1,25 +1,22 @@
 <template>
     <div class="pagination">
         <div
-            class="pagination__elem"
             v-for="page in pages"
-            v-on:click="changeCurrentPage(page)"
             :class="{'active': currentPage === page}"
+            class="pagination__elem"
+            @click="changeCurrentPage(page)"
         >
             {{page}}
         </div>
     </div>
 </template>
 <script>
+import {mapGetters} from "vuex";
+
 export default {
     props: ['pages'],
     computed: {
-        currentPage: function () {
-            return this.$store.getters.currentPage;
-        },
-    },
-    data() {
-        return {}
+        ...mapGetters(['currentPage']),
     },
     methods: {
         changeCurrentPage(page) {

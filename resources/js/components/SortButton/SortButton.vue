@@ -1,7 +1,7 @@
 <template>
     <button
         class="sort-button"
-        v-on:click="sortComments(criterion, direction)"
+        @click="sortComments(criterion, direction)"
     >
     {{text}}
     </button>

@@ -6,29 +6,29 @@
                 <div class="comment__header">
                     <div class="comment__author">
                         <span class="comment__label">Author:</span>
-                        {{ comment.name }}
+                        {{ name }}
                     </div>
                     <div class="comment__date">
                         <span class="comment__label">Date:</span>
                         {{ formatDate }}
                     </div>
                 </div>
-                <div class="comment__message">{{ comment.text }}</div>
+                <div class="comment__message">{{ text }}</div>
             </div>
         </div>
         <div class="comment__footer">
-            <span class="comment__label">{{comment.id}}</span>
-            <button class="comment__button" v-on:click="deleteComment(comment.id)" :disabled="isButtonDisabled">Delete</button>
+            <span class="comment__label">{{id}}</span>
+            <button class="comment__button" @click="deleteComment(id)" :disabled="isButtonDisabled">Delete</button>
         </div>
     </li>
 </template>
 
 <script>
 export default {
-    props: ['comment'],
+    props: ['name', 'text', 'date', 'id'],
     computed: {
         formatDate() {
-            const date = new Date(this.comment.date);
+            const date = new Date(this.date);
 
             return date.toLocaleString();
         }
@@ -101,6 +101,7 @@ export default {
 .comment__message {
     word-break: break-all;
     margin-bottom: 12px;
+    padding-right: 60px;
 }
 
 .comment__footer {
