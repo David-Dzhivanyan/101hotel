@@ -13,8 +13,16 @@ body, #app {
 }
 
 ul {
-    margin-left: 0; /* Отступ слева в браузере IE и Opera */
-    padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
+    margin-left: 0;
+    padding-left: 0;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 16px;
+    padding: 5px;
 }
 
 @media (max-width: 768px) {

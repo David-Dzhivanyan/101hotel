@@ -91,9 +91,14 @@ export default {
 .commentary {
     display: flex;
     justify-content: center;
+    max-width: 960px;
     width: 100%;
     margin: auto auto;
     padding: 20px 40px;
+}
+
+.commentary__inner {
+    width: 100%;
 }
 
 .commentary__header {
@@ -105,5 +110,22 @@ export default {
     display: flex;
     gap: 10px;
     margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+    .commentary {
+        display: flex;
+        justify-content: center;
+        max-width: 960px;
+        width: 100%;
+        margin: auto auto;
+        padding: 10px 20px;
+    }
+
+
+    .commentary__header {
+        font-size: 30px;
+        margin-bottom: 8px;
+    }
 }
 </style>

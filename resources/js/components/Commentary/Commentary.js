@@ -37,6 +37,18 @@ export default {
                     throw new Error();
                 })
         },
+        async editComment(ctx, data) {
+            await axios.patch(`/api/comments/${data.id}`, JSON.stringify(data.comment),
+                {
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then(() => {
+                    ctx.dispatch('fetchComments');
+                })
+                .catch(error => {
+                    console.error('Ошибка при редактировании комментария:', error);
+                })
+        },
     },
     mutations: {
         updateAllComments(state, allComments) {

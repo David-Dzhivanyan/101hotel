@@ -14,7 +14,12 @@
 import {mapGetters} from "vuex";
 
 export default {
-    props: ['pages'],
+    props: {
+        pages: {
+            type: Number,
+            required: true,
+        }
+    },
     computed: {
         ...mapGetters(['currentPage']),
     },

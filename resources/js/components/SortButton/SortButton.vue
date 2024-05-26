@@ -9,7 +9,19 @@
 
 <script>
 export default {
-    props: ['text', 'criterion', 'direction'],
+    props: {
+        text: {
+            type: String,
+        },
+        criterion: {
+            type: String,
+            default: 'date',
+        },
+        direction: {
+            type: Array,
+            default: ['asc', 'desc'],
+        },
+    },
     methods: {
         sortComments(criterion, direction) {
             const arg = {criterion, direction};
@@ -29,5 +41,12 @@ export default {
     border-radius: 0.25rem;
     font-size: 18px;
     padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .sort-button {
+        font-size: 14px;
+        padding: 5px;
+    }
 }
 </style>

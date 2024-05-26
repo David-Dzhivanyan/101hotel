@@ -80,11 +80,8 @@ export default {
 }
 
 .comment-form__button {
-    cursor: pointer;
     background-color: #1f75cb;
     box-shadow: inset 0 0 0 1px #1068bf;
-    border: none;
-    border-radius: 0.25rem;
     color: white;
     font-size: 18px;
     padding: 10px;
